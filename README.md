@@ -26,7 +26,7 @@
 ## Arsitektur & Fitur
 
 - Angular, PrimeNG, PrimeFlex.
-- Backend API on this repo : https://github.com/alterra-sofco/e-recruitment.git
+- Backend API on this repo : https://github.com/Yans88/eRecruitment-api.git
 - Apache POI untuk import data master skill dan Export data (.xlsx)
 - Pagination, server side.
 - Interceptor.
