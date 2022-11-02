@@ -1,0 +1,118 @@
+<p-confirmPopup></p-confirmPopup>
+
+<p-card header="Detail Pelamar" subheader="Basic Profil" styleClass="p-card-shadow pr-5 pl-5">
+  <div class="surface-section" *ngIf="isLoading">
+    <p-skeleton height="3rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="70rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="50rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="6rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="30rem" height="4rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="50rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="6rem" height="5rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="80rem" height="4rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="4rem" width="40rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="95rem" height="3rem"></p-skeleton>
+  </div>
+  <ul class="list-none p-0 m-0">
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">
+        <p-image src="{{data.avatarURL || 'assets/images/noPhoto.jpg'}}" alt="Image" width="250" height="300"
+                 [preview]="true">
+          <ng-template pTemplate="indicator">
+            View
+          </ng-template>
+        </p-image>
+      </div>
+    </li>
+    <li class="px-2 py-2" *ngIf="data.cvURL">
+      <a href="{{data.cvURL}}" target="_blank">
+        <p-button label="Curriculum Vitae" icon="pi pi-file-pdf"></p-button>
+      </a>
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">Nama</div>
+      <div class="text-900 w-full md:w-10 md:flex-order-0 flex-order-1">{{data.name}}</div>
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">Nomor Telepon</div>
+      <div class="text-900 w-full md:w-10 md:flex-order-0 flex-order-1">{{data.phoneNumber}}</div>
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">Email</div>
+      <div class="text-900 w-full md:w-10 md:flex-order-0 flex-order-1">{{data.email}}</div>
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">Usia</div>
+      <div class="text-900 w-full md:w-10 md:flex-order-0 flex-order-1">{{age}} Tahun</div>
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">Alamat</div>
+      <div class="text-900 w-full md:w-10 md:flex-order-0 flex-order-1">{{data.address}}</div>
+    </li>
+  </ul>
+
+</p-card>
+
+<p-card header="Pengalaman" subheader="Detail pengalaman" styleClass="p-card-shadow pr-5 pl-5 mt-4">
+  <div class="surface-section" *ngIf="isLoading">
+    <p-skeleton height="3rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="70rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="50rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="6rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="30rem" height="4rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="50rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="6rem" height="5rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="80rem" height="4rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="4rem" width="40rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="95rem" height="3rem"></p-skeleton>
+  </div>
+  <ul class="list-none p-0 m-0" *ngFor="let experience of data.experiences">
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-900 w-full md:w-10 md:flex-order-0 "><b>{{experience.position}}</b></div>
+    </li>
+    <li class="flex align-items-center py-1 px-2 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">{{experience.companyName}}</div>
+    </li>
+    <li class="flex align-items-center py-1 px-2 surface-border flex-wrap">
+      <div class="text-900 w-full md:w-10 md:flex-order-0 ">{{experience.startDate}} - {{experience.endDate}}</div>
+    </li>
+    <li class="flex align-items-center py-3 px-2 surface-border flex-wrap">
+      <div class="text-900 w-full md:w-10 md:flex-order-0 ">{{experience.description}}</div>
+    </li>
+  </ul>
+</p-card>
+
+<p-card header="Pendidikan" subheader="Detail pendidikan" styleClass="p-card-shadow pr-5 pl-5 mt-4">
+  <div class="surface-section" *ngIf="isLoading">
+    <p-skeleton height="3rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="70rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="50rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="6rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="30rem" height="4rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="50rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="6rem" height="5rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="80rem" height="4rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="4rem" width="40rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="95rem" height="3rem"></p-skeleton>
+  </div>
+  <ul class="list-none p-0 m-0" *ngFor="let education of data.educations">
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-900 w-full md:w-10 md:flex-order-0 "><b>{{education.educationName}}</b></div>
+    </li>
+    <li class="flex align-items-center py-1 px-2 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">{{education.major}}</div>
+    </li>
+    <li class="flex align-items-center py-1 px-2 surface-border flex-wrap">
+      <div class="text-900 w-full md:w-10 md:flex-order-0 ">{{education.startDate}} - {{education.endDate}}</div>
+    </li>
+    <li class="flex align-items-center py-3 px-2 surface-border flex-wrap">
+      <div class="text-900 w-full md:w-10 md:flex-order-0 ">{{education.description}}</div>
+    </li>
+  </ul>
+</p-card>
+<p-card styleClass="p-card-shadow pr-5 pl-5 mt-4">
+  <p-splitButton label="Shorted" icon="pi pi-check" [model]="buttonItems" styleClass="p-button-success"></p-splitButton>
+  <button pButton type="button" label="Disqualified" class="p-button-danger mx-2" icon="pi pi-times"
+          (click)="reject()"></button>
+</p-card>
+

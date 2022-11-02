@@ -1,0 +1,100 @@
+<div class="grid pt-4">
+  <div class="col-12 lg:col-6 xl:col-3">
+    <div class="card mb-0">
+      <div class="flex justify-content-between mb-3">
+        <p-skeleton width="20rem" height="4rem" styleClass="mt-1" *ngIf="isLoading"></p-skeleton>
+        <div *ngIf="!isLoading">
+          <span class="block text-500 font-medium mb-3">All Job</span>
+          <div class="text-900 text-green-700 font-medium text-xl">{{items!.totalJobRequest}}</div>
+        </div>
+        <div *ngIf="!isLoading" class="flex align-items-center justify-content-center bg-blue-100 border-round"
+             [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+          <i class="pi pi-inbox text-blue-500 text-xl"></i>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-12 lg:col-6 xl:col-3">
+    <div class="card mb-0">
+      <div class="flex justify-content-between mb-3">
+        <p-skeleton width="20rem" height="4rem" styleClass="mt-1" *ngIf="isLoading"></p-skeleton>
+        <div *ngIf="!isLoading">
+          <span class="block text-500 font-medium mb-3">New Job</span>
+          <div class="text-900 text-green-700 font-medium text-xl">{{items!.totalNewJobRequest}}</div>
+        </div>
+        <div *ngIf="!isLoading" class="flex align-items-center justify-content-center bg-orange-100 border-round"
+             [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+          <i class="pi pi-box text-orange-500 text-xl"></i>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-12 lg:col-6 xl:col-3">
+    <div class="card mb-0">
+      <div class="flex justify-content-between mb-3">
+        <p-skeleton width="20rem" height="4rem" styleClass="mt-1" *ngIf="isLoading"></p-skeleton>
+        <div *ngIf="!isLoading">
+          <span class="block text-500 font-medium mb-3">Posted Job</span>
+          <div class="text-900 text-green-700 font-medium text-xl">{{items!.totalJobPosting}}</div>
+        </div>
+        <div *ngIf="!isLoading" class="flex align-items-center justify-content-center bg-cyan-100 border-round"
+             [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+          <i class="pi pi-sort-numeric-up-alt text-cyan-500 text-xl"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 lg:col-6 xl:col-3">
+    <div class="card mb-0">
+      <div class="flex justify-content-between mb-3">
+        <p-skeleton width="20rem" height="4rem" styleClass="mt-1" *ngIf="isLoading"></p-skeleton>
+        <div *ngIf="!isLoading">
+          <span class="block text-500 font-medium mb-3">Submission</span>
+          <div class="text-900 text-green-700 font-medium text-xl">{{items!.totalApplied}}</div>
+        </div>
+        <div *ngIf="!isLoading" class="flex align-items-center justify-content-center bg-purple-100 border-round"
+             [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+          <i class="pi pi-users text-purple-500 text-xl"></i>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-12 pt-4">
+    <div class="card">
+      <div *ngIf="isLoading">
+        <p-skeleton width="30%" height="3rem" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="60%" height="2rem" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="80%" height="2rem" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="100%" height="100px" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="90%" height="60px" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="30%" height="3rem" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="60%" height="2rem" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="75%" height="100px" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="90%" height="60px" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="60%" height="2rem" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="80%" height="2rem" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="95%" height="3rem" styleClass="mb-3"></p-skeleton>
+        <div class="flex justify-content-between mt-3">
+          <p-skeleton width="17rem" height="3rem"></p-skeleton>
+          <p-skeleton width="10rem" height="3rem"></p-skeleton>
+        </div>
+      </div>
+      <p-galleria [value]="images" [responsiveOptions]="carouselResponsiveOptions" [numVisible]="5" [circular]="true"
+                  *ngIf="!isLoading" [autoPlay]="true" [transitionInterval]="3000" [showIndicators]="true"
+                  [showThumbnails]="false" [showIndicatorsOnItem]="true">
+        <ng-template pTemplate="item" let-item>
+          <img [src]="item?.img" style="width: 100%; display: block;"/>
+        </ng-template>
+        <ng-template pTemplate="caption" let-item>
+          <h4 style="margin-bottom: .5rem; color: #ffffff;">Gallery</h4>
+          <p>{{item?.title}}</p>
+        </ng-template>
+      </p-galleria>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<p-toast position="top-center" key="addDataPengajuan"></p-toast>
+<p-card header="Form Pengajuan" subheader="Penambahan SDM" styleClass="p-card-shadow pr-5 pl-5">
+  <p-divider></p-divider>
+  <div *ngIf="isLoading">
+    <p-skeleton height="3rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="70rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="50rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="6rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="30rem" height="4rem"></p-skeleton>
+  </div>
+  <div *ngIf="!isLoading">
+    <form [formGroup]="formData" (ngSubmit)="saveData()" autocomplete="off">
+      <div class="grid p-fluid">
+        <div class="col-4">
+          <div class="grid">
+
+            <div class="col-12">
+              <label for="posisi"><h5>Posisi</h5></label>
+              <input type="text" class="p-inputtext-sm" pInputText id="posisi" formControlName="posisi"
+                     placeholder="Posisi" required autofocus/>
+
+            </div>
+            <div class="col-12">
+              <label for="numberRequired"><h5>Jumlah Kebutuhan</h5></label>
+              <p-inputNumber mode="decimal" id="numberRequired" class="p-inputtext-sm" [showButtons]="false" [min]="1"
+                             formControlName="numberRequired" placeholder="Jumlah Kebutuhan">
+              </p-inputNumber>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-7 col-offset-1">
+          <h5>Catatan</h5>
+          <textarea rows="6" placeholder="Catatan ..." pInputTextarea formControlName="remarkStaff"></textarea>
+
+        </div>
+
+
+      </div>
+      <h5>Deskripsi</h5>
+      <p-editor formControlName="description" [style]="{'height':'320px'}">
+
+      </p-editor>
+      <p-divider>
+        <span class="p-tag p-tag-warning">Skill yang dibutuhkan</span>
+      </p-divider>
+      <div class="grid p-fluid mt-5">
+
+        <div class="col-12 md:col-2" formArrayName="listSkill"
+             *ngFor="let listSkill of ordersFormArray.controls; let i = index">
+
+          <div class="field-checkbox">
+            <p-checkbox [formControlName]="i" value={{dataSKill[i].skillId}} id={{dataSKill[i].skillId}}
+                        (onChange)="onChangeData(dataSKill[i].skillId, $event)"></p-checkbox>
+            <label for={{dataSKill[i].skillId}} class="font-bold">{{dataSKill[i].skillName}}</label>
+
+          </div>
+
+        </div>
+
+      </div>
+      <p-divider></p-divider>
+
+      <p-button type="submit" label="Save" icon="pi pi-check"
+                [disabled]="formData.invalid || listSkill.length===0"></p-button>
+      <p-button label="Cancel" icon="pi pi-times" styleClass="p-button-secondary" routerLink="/data-pengajuan"
+                [style]="{'margin-left': '.5em'}"></p-button>
+
+    </form>
+  </div>
+</p-card>

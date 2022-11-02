@@ -1,0 +1,535 @@
+<p-toast key="updateStatusPengajuan"></p-toast>
+<p-confirmPopup></p-confirmPopup>
+<p-card header="Detail Pengajuan" subheader="Penambahan SDM" styleClass="p-card-shadow pr-5 pl-5">
+  <div class="surface-section" *ngIf="isLoading">
+    <p-skeleton height="3rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="70rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="50rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="6rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="30rem" height="4rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="50rem" height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="6rem" height="5rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="80rem" height="4rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="4rem" width="40rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton width="95rem" height="3rem"></p-skeleton>
+  </div>
+  <div class="surface-section" *ngIf="!isLoading">
+    <ul class="list-none p-0 m-0">
+      <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-2 font-medium">Posisi</div>
+        <div class="text-900 w-full md:w-10 md:flex-order-0 flex-order-1">{{item.posisi}}</div>
+
+      </li>
+      <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-2 font-medium">Skills</div>
+        <div class="text-900 w-full md:w-10 md:flex-order-0 flex-order-1" [innerHtml]="item.listSkill | tagSkill">
+        </div>
+
+      </li>
+      <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-2 font-medium">Jumlah Kebutuhan</div>
+        <div class="text-900 w-6 md:w-4 md:flex-order-0 flex-order-1">{{item.numberRequired}}</div>
+        <div class="text-500 w-6 md:w-2 font-medium">Jumlah Pelamar</div>
+        <div class="text-900 w-6l md:w-4 md:flex-order-0 flex-order-1">{{item.numberApplicant || 0}}</div>
+      </li>
+
+      <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-2 font-medium">Diajukan Oleh</div>
+        <div class="text-900 w-full md:w-4 md:flex-order-0 flex-order-1 line-height-3">
+          {{item.requestName}}
+        </div>
+        <div class="text-500 w-6 md:w-2 font-medium">Status</div>
+        <div class="text-900 w-full md:w-4 md:flex-order-0 flex-order-1 line-height-3"
+             [innerHtml]="item.status | statusPengajuan">
+        </div>
+      </li>
+
+      <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-2 font-medium">Catatan Staff</div>
+        <div class="text-900 w-full md:w-10 md:flex-order-0 flex-order-1 line-height-3">
+          {{item.remarkStaff ? item.remarkStaff : '-'}}
+        </div>
+      </li>
+
+
+      <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-2 font-medium">Tanggal</div>
+        <div class="text-900 w-full md:w-4 md:flex-order-0 flex-order-1 line-height-3">
+          {{item.createdAt | date: 'dd MMM yyyy HH:mm'}}
+        </div>
+        <div class="text-500 w-6 md:w-2 font-medium">Deadline</div>
+        <div class="text-900 w-full md:w-4 md:flex-order-0 flex-order-1 line-height-3">
+
+          <p-calendar [(ngModel)]="item.deadline" id="deadline" [minDate]="minDateValue"
+                      class="p-inputtext-sm {{conditionValidate}}"
+                      dateFormat="dd-mm-yy" [readonlyInput]="true" [showClear]="true"
+                      *ngIf="item.status === 1;else others"></p-calendar>
+          <small class="p-error ml-1 font-medium" *ngIf="submitted && !item.deadline">Deadline is required.</small>
+
+          <ng-template #others>{{item.deadline | date: 'dd MMM yyyy'}}</ng-template>
+        </div>
+      </li>
+      <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-2 font-medium">Catatan HR</div>
+        <div class="text-900 w-full md:w-10 md:flex-order-0 flex-order-1 line-height-3">
+          <textarea rows="3" class="w-full md:w-12 md:flex-order-0" placeholder="Catatan ..."
+                    pInputTextarea [ngModel]="item.remarkHR" *ngIf="item.status === 1;else other_content"></textarea>
+          <ng-template #other_content>{{item.remarkHR ? item.remarkHR : '-'}}</ng-template>
+        </div>
+      </li>
+      <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-2 font-medium">Deskripsi</div>
+
+        <div class="text-900 w-full md:w-10 md:flex-order-0 flex-order-1 line-height-3" [innerHtml]="item.description">
+        </div>
+      </li>
+
+    </ul>
+    <div class="mt-5 mb-0 flex justify-content-end flex-wrap">
+      <p-button label="Process" icon="pi pi-sync" styleClass="mr-2 p-button-sm" (click)="confirm($event)"
+                *ngIf="item.status===1 && roleName==='ADMIN'"></p-button>
+      <p-button label="Close Job" icon="pi pi-angle-double-down" styleClass="mr-2 p-button-sm p-button-warning"
+                (click)="closeJob($event)"
+                *ngIf="item.status === 3"></p-button>
+      <p-button label="Cancel" icon="pi pi-angle-double-left" routerLink="/data-pengajuan"
+                styleClass="p-button-secondary p-button-sm"></p-button>
+    </div>
+  </div>
+
+</p-card>
+
+
+<p-card header="List Pelamar" subheader="Nama Posisi" styleClass="p-card-shadow pr-5 pl-5 mt-5"
+        *ngIf="item?.status !== 1 && item?.status !== 2">
+  <p-tabView>
+    <p-tabPanel header="All" leftIcon="pi pi-th-large">
+      <div class="grid">
+        <div class="col-12 md:col-12">
+          <p-table #dt [value]="items" [rows]="10"
+                   [paginator]="true" (onLazyLoad)="loadDataLazy($event)" [lazy]="true"
+                   [totalRecords]="totalRecords"
+                   [rowHover]="true" dataKey="submissionId"
+                   [rowsPerPageOptions]="[10, 25, 50]"
+                   [showCurrentPageReport]="true"
+                   [loading]="isLoading"
+                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                   styleClass="p-datatable-gridlines"
+                   dataKey="idPengajuan" responsiveLayout="scroll"
+                   selectionMode="single"
+                   (onRowSelect)="onRowSelect($event)"
+                   [globalFilterFields]="['keyword']">
+
+            <ng-template pTemplate="caption">
+              <div class="flex">
+
+        <span class="p-input-icon-left ml-auto">
+<!--                <i class="pi pi-search"></i>-->
+
+          <!--                <input pInputText type="text" (input)="searchData($event)"-->
+          <!--                       placeholder="Search by name"/>-->
+
+        </span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="text-center" width="5%">No.</th>
+                <th pSortableColumn="appliedAt" class="text-center" width="10%">Tanggal Apply
+                  <p-sortIcon field="appliedAt"></p-sortIcon>
+                </th>
+                <th pSortableColumn="name" class="text-center" width="25%">Nama
+                  <p-sortIcon field="name"></p-sortIcon>
+                </th>
+                <th pSortableColumn="email" class="text-center" width="15%">Email
+                  <p-sortIcon field="email"></p-sortIcon>
+                </th>
+                <th pSortableColumn="phoneNumber" class="text-center" width="15%">Nomor Telepon
+                  <p-sortIcon field="phoneNumber"></p-sortIcon>
+                </th>
+                <th pSortableColumn="status" class="text-center">Status
+                  <p-sortIcon field="status"></p-sortIcon>
+                  <!--                </th>-->
+                  <!--                <th class="text-center">Action-->
+                  <!--                </th>-->
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowIndex="rowIndex" let-applicant>
+              <tr [pSelectableRow]="applicant" tooltipPosition="top">
+                <td class="text-center">{{rowIndex + 1}}.</td>
+                <td>{{applicant.appliedAt | date: 'dd MMM yyyy HH:mm'}}</td>
+                <td>{{applicant.appliedBy.name}}</td>
+                <td>{{applicant.appliedBy.email}}</td>
+                <td>{{applicant.appliedBy.phoneNumber}}</td>
+                <td>
+                  <div class="text-900 w-full md:w-4 md:flex-order-0 flex-order-1"
+                       [innerHtml]="applicant.status"></div>
+                </td>
+                <!--                <td>-->
+                <!--                  <p-button label="View" icon="pi pi-eye" iconPos="left" (onClick)="onRowSelect(applicant.submissionId)"></p-button>-->
+                <!--                </td>-->
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="6" class="text-center font-bold p-error">No data found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="New applied list" leftIcon="pi pi-bell" badge="8" badgeClass="p-badge-danger">
+      <ng-template pTemplate="content">
+        <p-table #dt [value]="items_applied" [rows]="10"
+                 [paginator]="true" (onLazyLoad)="loadDataLazyApplied($event)" [lazy]="true"
+                 [totalRecords]="totalRecords"
+                 [rowHover]="true" dataKey="idPengajuan"
+                 [rowsPerPageOptions]="[10, 25, 50]"
+                 [showCurrentPageReport]="true"
+                 [loading]="isLoading"
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 styleClass="p-datatable-gridlines"
+                 dataKey="idPengajuan" responsiveLayout="scroll"
+                 selectionMode="single"
+                 (onRowSelect)="onRowSelect($event)"
+                 [globalFilterFields]="['keyword']">
+
+          <ng-template pTemplate="caption">
+            <div class="flex">
+
+        <span class="p-input-icon-left ml-auto">
+        </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-center" width="5%">No.</th>
+              <th pSortableColumn="appliedAt" class="text-center" width="10%">Tanggal Apply
+                <p-sortIcon field="appliedAt"></p-sortIcon>
+              </th>
+              <th pSortableColumn="name" class="text-center" width="25%">Nama
+                <p-sortIcon field="name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="email" class="text-center" width="15%">Email
+                <p-sortIcon field="email"></p-sortIcon>
+              </th>
+              <th pSortableColumn="phoneNumber" class="text-center" width="15%">Nomor Telepon
+                <p-sortIcon field="phoneNumber"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowIndex="rowIndex" let-applicant>
+            <tr [pSelectableRow]="applicant" pTooltip="View Detail" tooltipPosition="top">
+              <td class="text-center">{{rowIndex + 1}}.</td>
+              <td>{{applicant.appliedAt | date: 'dd MMM yyyy HH:mm'}}</td>
+              <td>{{applicant.appliedBy.name}}</td>
+              <td>{{applicant.appliedBy.email}}</td>
+              <td>{{applicant.appliedBy.phoneNumber}}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6" class="text-center font-bold p-error">No data found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </p-tabPanel>
+    <p-tabPanel header="Shorted list" leftIcon="pi pi-briefcase">
+      <ng-template pTemplate="content">
+        <h5>Lulus sortir oleh staff dan akan dipanggil untuk interview atau psikotes</h5>
+
+        <p-table #dt [value]="items_shorted" [rows]="10"
+                 [paginator]="true" (onLazyLoad)="loadDataLazyshorted($event)" [lazy]="true"
+                 [totalRecords]="totalRecords"
+                 [rowHover]="true" dataKey="submmisionId"
+                 [rowsPerPageOptions]="[10, 25, 50]"
+                 [showCurrentPageReport]="true"
+                 [loading]="isLoading"
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 styleClass="p-datatable-gridlines"
+                 dataKey="idPengajuan" responsiveLayout="scroll"
+                 selectionMode="single"
+                 (onRowSelect)="onRowSelect($event)"
+                 [globalFilterFields]="['keyword']">
+
+          <ng-template pTemplate="caption">
+            <div class="flex">
+
+        <span class="p-input-icon-left ml-auto">
+        </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-center" width="5%">No.</th>
+              <th pSortableColumn="appliedAt" class="text-center" width="10%">Tanggal Apply
+                <p-sortIcon field="appliedAt"></p-sortIcon>
+              </th>
+              <th pSortableColumn="name" class="text-center" width="25%">Nama
+                <p-sortIcon field="name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="email" class="text-center" width="15%">Email
+                <p-sortIcon field="email"></p-sortIcon>
+              </th>
+              <th pSortableColumn="phoneNumber" class="text-center" width="15%">Nomor Telepon
+                <p-sortIcon field="phoneNumber"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowIndex="rowIndex" let-applicant>
+            <tr [pSelectableRow]="applicant" pTooltip="View Detail" tooltipPosition="top">
+              <td class="text-center">{{rowIndex + 1}}.</td>
+              <td>{{applicant.appliedAt | date: 'dd MMM yyyy HH:mm'}}</td>
+              <td>{{applicant.appliedBy.name}}</td>
+              <td>{{applicant.appliedBy.email}}</td>
+              <td>{{applicant.appliedBy.phoneNumber}}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6" class="text-center font-bold p-error">No data found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </p-tabPanel>
+    <p-tabPanel header="Assessment" leftIcon="pi pi-file-import" tooltip="Lulus Interview">
+      <ng-template pTemplate="content">
+        <h4>kandidat akan dilakukan test psikotes</h4>
+        <p-table #dt [value]="items_assessment" [rows]="10"
+                 [paginator]="true" (onLazyLoad)="loadDataLazyAssessment($event)" [lazy]="true"
+                 [totalRecords]="totalRecords"
+                 [rowHover]="true" dataKey="idPengajuan"
+                 [rowsPerPageOptions]="[10, 25, 50]"
+                 [showCurrentPageReport]="true"
+                 [loading]="isLoading"
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 styleClass="p-datatable-gridlines"
+                 dataKey="idPengajuan" responsiveLayout="scroll"
+                 selectionMode="single"
+                 (onRowSelect)="onRowSelect($event)"
+                 [globalFilterFields]="['keyword']">
+
+          <ng-template pTemplate="caption">
+            <div class="flex">
+
+        <span class="p-input-icon-left ml-auto">
+        </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-center" width="5%">No.</th>
+              <th pSortableColumn="appliedAt" class="text-center" width="10%">Tanggal Apply
+                <p-sortIcon field="appliedAt"></p-sortIcon>
+              </th>
+              <th pSortableColumn="name" class="text-center" width="25%">Nama
+                <p-sortIcon field="name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="email" class="text-center" width="15%">Email
+                <p-sortIcon field="email"></p-sortIcon>
+              </th>
+              <th pSortableColumn="phoneNumber" class="text-center" width="15%">Nomor Telepon
+                <p-sortIcon field="phoneNumber"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowIndex="rowIndex" let-applicant>
+            <tr [pSelectableRow]="applicant" pTooltip="View Detail" tooltipPosition="top">
+              <td class="text-center">{{rowIndex + 1}}.</td>
+              <td>{{applicant.appliedAt | date: 'dd MMM yyyy HH:mm'}}</td>
+              <td>{{applicant.appliedBy.name}}</td>
+              <td>{{applicant.appliedBy.email}}</td>
+              <td>{{applicant.appliedBy.phoneNumber}}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6" class="text-center font-bold p-error">No data found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </p-tabPanel>
+    <p-tabPanel header="Interview" leftIcon="pi pi-users" tooltip="Lulus Psikotes">
+      <ng-template pTemplate="content">
+        <h4>Kandidat akan melakukan interview</h4>
+        <p-table #dt [value]="items_interview" [rows]="10"
+                 [paginator]="true" (onLazyLoad)="loadDataLazyInterview($event)" [lazy]="true"
+                 [totalRecords]="totalRecords"
+                 [rowHover]="true" dataKey="idPengajuan"
+                 [rowsPerPageOptions]="[10, 25, 50]"
+                 [showCurrentPageReport]="true"
+                 [loading]="isLoading"
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 styleClass="p-datatable-gridlines"
+                 dataKey="idPengajuan" responsiveLayout="scroll"
+                 selectionMode="single"
+                 (onRowSelect)="onRowSelect($event)"
+                 [globalFilterFields]="['keyword']">
+
+          <ng-template pTemplate="caption">
+            <div class="flex">
+
+        <span class="p-input-icon-left ml-auto">
+        </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-center" width="5%">No.</th>
+              <th pSortableColumn="appliedAt" class="text-center" width="10%">Tanggal Apply
+                <p-sortIcon field="appliedAt"></p-sortIcon>
+              </th>
+              <th pSortableColumn="name" class="text-center" width="25%">Nama
+                <p-sortIcon field="name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="email" class="text-center" width="15%">Email
+                <p-sortIcon field="email"></p-sortIcon>
+              </th>
+              <th pSortableColumn="phoneNumber" class="text-center" width="15%">Nomor Telepon
+                <p-sortIcon field="phoneNumber"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowIndex="rowIndex" let-applicant>
+            <tr [pSelectableRow]="applicant" pTooltip="View Detail" tooltipPosition="top">
+              <td class="text-center">{{rowIndex + 1}}.</td>
+              <td>{{applicant.appliedAt | date: 'dd MMM yyyy HH:mm'}}</td>
+              <td>{{applicant.appliedBy.name}}</td>
+              <td>{{applicant.appliedBy.email}}</td>
+              <td>{{applicant.appliedBy.phoneNumber}}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6" class="text-center font-bold p-error">No data found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </p-tabPanel>
+    <p-tabPanel header="Done" leftIcon="pi pi-check" tooltip="Final Result">
+      <ng-template pTemplate="content">
+        <h4>Hired</h4>
+        <p-table #dt [value]="items_done" [rows]="10"
+                 [paginator]="true" (onLazyLoad)="loadDataLazyDone($event)" [lazy]="true"
+                 [totalRecords]="totalRecords"
+                 [rowHover]="true" dataKey="idPengajuan"
+                 [rowsPerPageOptions]="[10, 25, 50]"
+                 [showCurrentPageReport]="true"
+                 [loading]="isLoading"
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 styleClass="p-datatable-gridlines"
+                 dataKey="idPengajuan" responsiveLayout="scroll"
+                 selectionMode="single"
+                 (onRowSelect)="onRowSelect($event)"
+                 [globalFilterFields]="['keyword']">
+
+          <ng-template pTemplate="caption">
+            <div class="flex">
+
+        <span class="p-input-icon-left ml-auto">
+        </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-center" width="5%">No.</th>
+              <th pSortableColumn="appliedAt" class="text-center" width="10%">Tanggal Apply
+                <p-sortIcon field="appliedAt"></p-sortIcon>
+              </th>
+              <th pSortableColumn="name" class="text-center" width="25%">Nama
+                <p-sortIcon field="name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="email" class="text-center" width="15%">Email
+                <p-sortIcon field="email"></p-sortIcon>
+              </th>
+              <th pSortableColumn="phoneNumber" class="text-center" width="15%">Nomor Telepon
+                <p-sortIcon field="phoneNumber"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowIndex="rowIndex" let-applicant>
+            <tr [pSelectableRow]="applicant" pTooltip="View Detail" tooltipPosition="top">
+              <td class="text-center">{{rowIndex + 1}}.</td>
+              <td>{{applicant.appliedAt | date: 'dd MMM yyyy HH:mm'}}</td>
+              <td>{{applicant.appliedBy.name}}</td>
+              <td>{{applicant.appliedBy.email}}</td>
+              <td>{{applicant.appliedBy.phoneNumber}}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6" class="text-center font-bold p-error">No data found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </p-tabPanel>
+    <p-tabPanel header="Disqualified" leftIcon="pi pi-times">
+      <ng-template pTemplate="content">
+        <h4>Tidak lolos</h4>
+        <p-table #dt [value]="items_disqualified" [rows]="10"
+                 [paginator]="true" (onLazyLoad)="loadDataLazyDisqualified($event)" [lazy]="true"
+                 [totalRecords]="totalRecords"
+                 [rowHover]="true" dataKey="submmisionId"
+                 [rowsPerPageOptions]="[10, 25, 50]"
+                 [showCurrentPageReport]="true"
+                 [loading]="isLoading"
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 styleClass="p-datatable-gridlines"
+                 dataKey="idPengajuan" responsiveLayout="scroll"
+                 selectionMode="single"
+                 (onRowSelect)="onRowSelect($event)"
+                 [globalFilterFields]="['keyword']">
+
+          <ng-template pTemplate="caption">
+            <div class="flex">
+
+        <span class="p-input-icon-left ml-auto">
+        </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-center" width="5%">No.</th>
+              <th pSortableColumn="appliedAt" class="text-center" width="10%">Tanggal Apply
+                <p-sortIcon field="appliedAt"></p-sortIcon>
+              </th>
+              <th pSortableColumn="name" class="text-center" width="25%">Nama
+                <p-sortIcon field="name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="email" class="text-center" width="15%">Email
+                <p-sortIcon field="email"></p-sortIcon>
+              </th>
+              <th pSortableColumn="phoneNumber" class="text-center" width="15%">Nomor Telepon
+                <p-sortIcon field="phoneNumber"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowIndex="rowIndex" let-applicant>
+            <tr [pSelectableRow]="applicant" pTooltip="View Detail" tooltipPosition="top">
+              <td class="text-center">{{rowIndex + 1}}.</td>
+              <td>{{applicant.appliedAt | date: 'dd MMM yyyy HH:mm'}}</td>
+              <td>{{applicant.appliedBy.name}}</td>
+              <td>{{applicant.appliedBy.email}}</td>
+              <td>{{applicant.appliedBy.phoneNumber}}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6" class="text-center font-bold p-error">No data found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </p-tabPanel>
+  </p-tabView>
+
+
+</p-card>
+
+

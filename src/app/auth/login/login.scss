@@ -1,0 +1,24 @@
+.form-02-main {
+  background-image: url('~src/assets/images/gallery/1c.jpg') !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  height: 100%;
+}
+
+.form-03-main {
+  width: 500px;
+  display: block;
+  margin: 20px auto;
+  padding: 25px 50px 25px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  z-index: 9;
+}
+
+.surface-card {
+  background: rgba(255, 255, 255, .7) !important;
+}
